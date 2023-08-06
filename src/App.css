@@ -1,0 +1,41 @@
+.header{
+    font-size: 2em;
+    border-bottom: 1px solid black;
+    padding-top: 20px;
+    padding-bottom: 20px;
+    padding-left: 20px;
+    display: flex;
+    justify-content: space-between;
+
+}
+
+.nav{
+    display: flex;
+
+}
+
+.board-size{
+    display: flex;
+    flex-direction: column;
+    width: 40%;
+    margin: auto;
+    padding: 20px;
+}
+
+.start{
+    margin-top: 20px;
+    
+}
+
+.start, .login{
+    padding: 10px;
+    border-radius: 0.5em;
+    border: 0;
+    box-shadow: 1px 1px 3px cornflowerblue;
+}
+
+.drop-down{
+    padding: 10px;
+    border-radius: 5px;
+}
+
