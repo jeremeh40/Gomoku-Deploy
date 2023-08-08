@@ -4,11 +4,13 @@ import { useState } from 'react'
 
 export default function Home() {
   const [size, setSize] = useState('')
+
   return (
     <form className={style.container}
     onSubmit={(e) => {
       e.preventDefault()
       console.log(size)
+      
     }}>
       <select name = 'board size' className={style.dropdown} defaultValue={'Board size'}
        onChange={e => setSize(e.target.value)}>
@@ -33,4 +35,6 @@ export default function Home() {
 
     </form>
   )
+
+  
 }
