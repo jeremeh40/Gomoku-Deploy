@@ -1,0 +1,30 @@
+.container{
+    display: flex;
+    flex-direction: column;
+    width: 40%;
+    margin: auto;
+    padding: 20px;
+}
+
+.button{
+    margin-top: 20px;
+    padding: 10px;
+    border-radius: 0.5em;
+    border: 0;
+    box-shadow: 1px 1px 3px cornflowerblue;
+    margin: 5px;
+    
+}
+
+.username, .password{
+    margin: 5px;
+    padding: 10px;
+    border-radius: 5px; 
+}
+
+.message{
+    background-color: red;
+    padding: 10px;
+    border-radius: 5px;
+    margin: 5px;
+}

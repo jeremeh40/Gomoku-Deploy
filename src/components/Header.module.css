@@ -1,0 +1,22 @@
+.header{
+    font-size: 2em;
+    border-bottom: 1px solid black;
+    padding-top: 20px;
+    padding-bottom: 20px;
+    padding-left: 20px;
+    display: flex;
+    justify-content: space-between;
+
+}
+
+.nav{
+    display: flex;
+
+}
+
+.button{
+    padding: 10px;
+    border-radius: 0.5em;
+    border: 0;
+    box-shadow: 1px 1px 3px cornflowerblue;
+}

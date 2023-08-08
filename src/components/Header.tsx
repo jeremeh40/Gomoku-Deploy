@@ -1,11 +1,13 @@
+import style from './Header.module.css'
+
 export default function Header() {
   return (
     <>
-    <header className="header">
+    <header className={style.header}>
 
-      <div className="logo">Gomoku</div>
-      <div className="nav">
-        <button className="login">Login</button>
+      <div className={style.logo}>Gomoku</div>
+      <div className={style.nav}>
+        <button className={style.button}>Login</button>
       </div>
 
     </header>

@@ -1,8 +1,18 @@
-export default function home() {
+import style from './Home.module.css'
+import { useState } from 'react'
+
+
+export default function Home() {
+  const [size, setSize] = useState('')
   return (
-    <form className="board-size">
-      <select name = 'board size' className="drop-down">
-        <option selected disabled>Board size</option>
+    <form className={style.container}
+    onSubmit={(e) => {
+      e.preventDefault()
+      console.log(size)
+    }}>
+      <select name = 'board size' className={style.dropdown} defaultValue={'Board size'}
+       onChange={e => setSize(e.target.value)}>
+        <option disabled>Board size</option>
         <option value ='5'>5</option>
         <option value ='6'>6</option>
         <option value ='7'>7</option>
@@ -19,7 +29,7 @@ export default function home() {
         <option value ='18'>18</option>
         <option value ='19'>19</option>
       </select>
-      <input type = 'submit' value = 'Start' className="start"/>
+      <input type = 'submit' value = 'Start' className={style.button}/>
 
     </form>
   )
