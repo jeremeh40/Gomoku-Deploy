@@ -1,8 +1,12 @@
 import style from './Login.module.css'
-import { useState } from 'react'
+import { useState, useContext } from 'react'
+import { useNavigate } from 'react-router-dom'
+import { UserContext } from '../context'
 import users from '../data/users.json'
 
 export default function Login() {
+  const { login } = useContext(UserContext)
+  const navigate = useNavigate()
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const [isCredentialInvald, setIsCredentialInvald] = useState(false)
@@ -14,7 +18,8 @@ export default function Login() {
         setIsCredentialInvald(true)
       }
       else{
-        console.log('logged in')
+        login(username)
+        navigate('/')
       }
   }
 
