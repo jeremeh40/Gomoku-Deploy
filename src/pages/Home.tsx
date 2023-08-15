@@ -1,15 +1,27 @@
 import style from './Home.module.css'
-import { useState } from 'react'
+import { useState, useContext } from 'react'
+import { useNavigate } from 'react-router-dom'
+import { UserContext } from '../context'
 
 
 export default function Home() {
   const [size, setSize] = useState('')
+  const navigate = useNavigate()
+  const { user } = useContext(UserContext)
+
+
+  const handleLogin = () =>{
+    if (!user) {return navigate('/login')}
+    else{ navigate('Game', {state: { Size: size}})}
+  }
 
   return (
     <form className={style.container}
     onSubmit={(e) => {
       e.preventDefault()
       console.log(size)
+      handleLogin()
+
       
     }}>
       <select name = 'board size' className={style.dropdown} defaultValue={'Board size'}

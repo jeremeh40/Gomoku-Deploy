@@ -5,7 +5,7 @@ import Home from './pages/Home'
 import Login from './pages/Login';
 import Game from './pages/Game';
 import Log from './pages/Log'
-import History from './pages/History';
+import History from './pages/Games';
 import { Routes, Route, Navigate } from 'react-router-dom';
 
 function App() {

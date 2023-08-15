@@ -1,15 +1,30 @@
 import Square from "../components/Square"
 import { useState } from "react"
+import { useLocation, useNavigate } from "react-router-dom";
 import style from './Game.module.css'
+import { useLocalStorage } from "../hooks";
 let count: number = 0;
+let gameCount:number = 1;
+let winner: string = ''
 
 export default function Game() {
+  const {state} =useLocation()
+  const {Size} = state
+  // console.log(Size)
 
-  const boardSize = 5;
+  const boardSize: number = Size;
   const player1 = 'black';
   const player2 = 'white';
 
-  const [board, setBoard] = useState(Array.from({ length: boardSize }, () => Array(boardSize).fill(0)));
+  
+  const initialBoard: string[][] = Array.from({ length: boardSize }, () => Array.from({ length: boardSize }, () => ' '));
+  const navigate = useNavigate();
+
+  const [games, saveGames] = useLocalStorage<Record<string, string [][]>>('games', {});
+
+
+
+  const [board, setBoard] = useState(initialBoard);
   const [gameover, setGameOver] = useState(false);
   let [currentPlayer, setCurrentPlayer] = useState('black');
   const [isDraw, setIsDraw] = useState(false);
@@ -22,6 +37,8 @@ export default function Game() {
               if (board[r][c] == board[r][c+1] && board[r][c+1] == board[r][c+2] && board [r][c+2] == board [r][c+3] && board[r][c+3] == board[r][c+4]){
                   
                   setGameOver(true)
+                  winner = currentPlayer
+                
                   return;
               }   
           }      
@@ -32,6 +49,7 @@ export default function Game() {
         if(board[r][c] != ' '){
             if(board[r][c] == board[r+1][c] && board[r+1][c] == board[r+2][c] && board [r+2][c] == board [r+3][c] && board[r+3][c] == board[r+4][c]){
               setGameOver(true)
+              winner = currentPlayer
               return;
             }
         }
@@ -43,6 +61,8 @@ for(let r=0; r<boardSize -4; r++){
         if(board[r][c] != ' '){
             if(board[r][c] == board[r+1][c+1] && board[r+1][c+1] == board[r+2][c+2] && board [r+2][c+2] == board [r+3][c+3] && board[r+3][c+3] == board[r+4][c+4]){
               setGameOver(true)
+              winner = currentPlayer
+              console.log(winner)
               return;
             }
         }
@@ -54,6 +74,7 @@ for(let r=4; r<boardSize; r++){
         if(board[r][c] != ' '){
             if(board[r][c] == board[r-1][c+1] && board[r-1][c+1] == board[r-2][c+2] && board [r-2][c+2] == board [r-3][c+3] && board[r-3][c+3] == board[r-4][c+4]){
               setGameOver(true)
+              winner = currentPlayer
               return;
             }
         }
@@ -67,13 +88,31 @@ if(count === boardSize * boardSize){
 }
 
   }
+
+
+  const leaveGame = () =>{
+
+    if (gameover || isDraw){
+      saveGames({...games, [`${winner}-${gameCount}`]: board})
+      navigate('/games')
+      // console.log(gameCount)
+      gameCount += 1;
+      // console.log(gameCount)
+      resetGame()
+
+    }
+    else { resetGame()
+    }
+  }
+
   const handleClick = (row:number, col:number) =>{
+    
     if(gameover === true || isDraw === true){
       return;
   
     }
 
-    if(board[row][col]!==0){
+    if(board[row][col]!==' '){
       return;
     }
 
@@ -81,7 +120,6 @@ if(count === boardSize * boardSize){
     updatedBoard[row][col] = currentPlayer;
     setBoard(updatedBoard);
     count += 1;
-    console.log(count)
 
     checkWinner()
 
@@ -111,7 +149,7 @@ if(count === boardSize * boardSize){
     setCurrentPlayer('black')
     setGameOver(false)
     setIsDraw(false)
-    setBoard(Array.from({ length: boardSize }, () => Array(boardSize).fill(0)))
+    setBoard(initialBoard)
     count = 0
   }
 
@@ -131,7 +169,7 @@ if(count === boardSize * boardSize){
     <div className="main">
       <div className="game-info">
         {currentPlayer && gameover === false && isDraw === false && <h2>Current Player: {currentPlayer}</h2>}
-        {gameover && <h2> Congratulations {currentPlayer} You won!</h2>}
+        {gameover && <h2> Congratulations {winner} You won!</h2>}
         {isDraw && <h2> No more available moves! it's a draw</h2>}
 
       </div>
@@ -142,7 +180,7 @@ if(count === boardSize * boardSize){
       </div>
       <div className="options">
         <button onClick={resetGame}>Restart</button>
-        <button>Leave</button>
+        <button onClick={() => leaveGame()}>Leave</button>
       </div>
 
     </div>
