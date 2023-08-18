@@ -5,28 +5,32 @@ import { UserContext } from '../context'
 
 
 export default function Home() {
-  const [size, setSize] = useState('')
+  const [size, setSize] = useState('size')
   const navigate = useNavigate()
   const { user } = useContext(UserContext)
 
 
   const handleLogin = () =>{
     if (!user) {return navigate('/login')}
-    else{ navigate('Game', {state: { Size: size}})}
+    else if (size !== 'size')
+      { navigate('Game', {state: { Size: size}})}
   }
 
   return (
+    <>
+    { user && size === 'size' && <h2 className={style.heading}>Please choose the size of the game board</h2>}
+    {!user && <h2 className={style.heading}>Please login before choosing board size</h2>}
     <form className={style.container}
     onSubmit={(e) => {
       e.preventDefault()
       console.log(size)
       handleLogin()
-
+      
       
     }}>
       <select name = 'board size' className={style.dropdown} defaultValue={'Board size'}
        onChange={e => setSize(e.target.value)}>
-        <option disabled>Board size</option>
+        <option value = 'Board size' disabled>Board size</option>
         <option value ='5'>5</option>
         <option value ='6'>6</option>
         <option value ='7'>7</option>
@@ -46,6 +50,7 @@ export default function Home() {
       <input type = 'submit' value = 'Start' className={style.button}/>
 
     </form>
+         </>
   )
 
   

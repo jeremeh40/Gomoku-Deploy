@@ -1,29 +1,43 @@
 import Square from "../components/Square"
-import { useState } from "react"
-import { useLocation, useNavigate } from "react-router-dom";
+import React, { useState, useContext } from "react"
+import { Navigate, useLocation, useNavigate } from "react-router-dom";
 import style from './Game.module.css'
 import { useLocalStorage } from "../hooks";
+import { UserContext } from "../context";
 let count: number = 0;
 let gameCount:number = 1;
 let winner: string = ''
+let blackCount = 1
+// let whiteCount = 2
+
 
 export default function Game() {
-  const {state} =useLocation()
-  const {Size} = state
+  const {user} = useContext(UserContext);
+ 
+
+  const {state} = useLocation()
+  const {Size} = state || {}
+
+
   // console.log(Size)
 
   const boardSize: number = Size;
   const player1 = 'black';
   const player2 = 'white';
 
+  type GameData = {
+    board: string[][];
+    turnOrder: string[];
+  };
+
   
   const initialBoard: string[][] = Array.from({ length: boardSize }, () => Array.from({ length: boardSize }, () => ' '));
   const navigate = useNavigate();
 
-  const [games, saveGames] = useLocalStorage<Record<string, string [][]>>('games', {});
+  const [games, saveGames] = useLocalStorage<Record<string, GameData>>('games', {});
 
 
-
+  const [turnOrder, setTurnOrder] = useState<string[]>([]);
   const [board, setBoard] = useState(initialBoard);
   const [gameover, setGameOver] = useState(false);
   let [currentPlayer, setCurrentPlayer] = useState('black');
@@ -84,6 +98,7 @@ for(let r=4; r<boardSize; r++){
 if(count === boardSize * boardSize){
   console.log('draw');
   setIsDraw(true)
+  winner = 'Draw'
   return;
 }
 
@@ -93,7 +108,7 @@ if(count === boardSize * boardSize){
   const leaveGame = () =>{
 
     if (gameover || isDraw){
-      saveGames({...games, [`${winner}-${gameCount}`]: board})
+      saveGames({...games, [`${winner}-${gameCount}`]: {board, turnOrder}})
       navigate('/games')
       // console.log(gameCount)
       gameCount += 1;
@@ -105,6 +120,8 @@ if(count === boardSize * boardSize){
     }
   }
 
+
+
   const handleClick = (row:number, col:number) =>{
     
     if(gameover === true || isDraw === true){
@@ -113,7 +130,7 @@ if(count === boardSize * boardSize){
     }
 
     if(board[row][col]!==' '){
-      return;
+      return
     }
 
     const updatedBoard = [...board];
@@ -121,15 +138,25 @@ if(count === boardSize * boardSize){
     setBoard(updatedBoard);
     count += 1;
 
+    const updatedTurnOrder = [...turnOrder, `${row}-${col}`];
+    setTurnOrder(updatedTurnOrder);
+
     checkWinner()
 
     if(currentPlayer === 'black'){
       setCurrentPlayer('white')
+      
+      console.log('black: '+blackCount)
+      blackCount +=1
     }
     else{
       setCurrentPlayer('black')
+      
+      console.log('white: '+blackCount)
+      blackCount +=1
     }
-    }
+  
+  }
 
   const renderCell = (row: number, col: number) =>{
     const cellValue = board[row][col];
@@ -141,6 +168,7 @@ if(count === boardSize * boardSize){
       id={`${row}-${col}`}
       className={`${cellClass}`}      
       onClick={()=> handleClick(row, col)}/>
+
     )
 
   }
@@ -150,6 +178,7 @@ if(count === boardSize * boardSize){
     setGameOver(false)
     setIsDraw(false)
     setBoard(initialBoard)
+    setTurnOrder([])
     count = 0
   }
 
@@ -160,6 +189,9 @@ if(count === boardSize * boardSize){
       </div>
     ))
   }
+
+  if(!user)
+  return <Navigate to = '/login'/>;
 
 
 
