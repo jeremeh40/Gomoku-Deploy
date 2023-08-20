@@ -1,34 +1,41 @@
 .container{
-    display: flex;
+    
+    display:flex;
     flex-direction: column;
-    width: 40%;
     margin: auto;
-    padding: 20px;
+    margin-top: 20px;
+    width: 70%;
+}
+
+.games{
+    display: flex;
+    justify-content: space-between;
+    border: 1px solid black;
+    margin: 5px;
+    padding: 10px;
+
+}
+
+.individualGames{
+
+    font-size: 1.2em;;
+
 }
 
 .button{
-    margin-top: 20px;
+
     padding: 10px;
     border-radius: 0.5em;
     border: 0;
     box-shadow: 1px 1px 3px cornflowerblue;
-    
 }
 
 .button:hover{
     cursor: pointer;
+
 }
 
-.dropdown{
-    padding: 10px;
-    border-radius: 5px;
-}
-
-.heading{
-
-    margin:auto;
+.gameCount{
     text-align: center;
-    padding: 20px;
     font-size: 1.2em;
-
 }

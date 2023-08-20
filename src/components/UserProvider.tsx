@@ -1,3 +1,5 @@
+/* Component to track user state as to whether they are logged in or not*/
+
 import { useState } from 'react'
 import {UserContext} from '../context'
 import { User } from '../types/User'
@@ -8,8 +10,9 @@ type UserProviderProps = {
 
 
 export default function UserProvider({children}: UserProviderProps) {
-    const [user, setUser] = useState<User | undefined>(undefined)
+    //track state of user and also define login status
 
+    const [user, setUser] = useState<User | undefined>(undefined)
     const login = (username:string) => setUser({username})
     const logout = () => setUser(undefined)
   return (

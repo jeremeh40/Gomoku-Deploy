@@ -1,3 +1,7 @@
+/*Gomoku 5 in a row game with customisable board size and determine winner and tied game. Game requires
+login before plying and previous game results are saved to local browser storage and can be viewed*/
+
+
 import './App.css';
 import Header from './components/Header'
 import { UserProvider } from './components';
@@ -9,6 +13,7 @@ import History from './pages/Games';
 import { Routes, Route, Navigate } from 'react-router-dom';
 
 function App() {
+  //Routes used to link all pages together, and each page given unique url
   return <UserProvider>
   <Header />
   <div className='main'>

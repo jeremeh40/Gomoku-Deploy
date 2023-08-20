@@ -16,6 +16,10 @@
     
 }
 
+.button:hover{
+    cursor: pointer;
+}
+
 .username, .password{
     margin: 5px;
     padding: 10px;

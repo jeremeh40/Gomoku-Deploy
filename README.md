@@ -14,6 +14,22 @@ Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
 The page will reload if you make edits.\
 You will also see any lint errors in the console.
 
+# usage
+
+1. Ability to login using username:admin password:password (login page)
+2. Size of gameboard can be chosen for logged in users(Home page)
+3. alternating turns for black and white (Game page)
+4. 5 pieces of the same colour in a row wins(Game page)
+5. all spaces used and no winner is a tie(Game page)
+6. board can be reset with 'restart' button(Game page)
+7. board can be saved if game is complete with the 'Leave' button(Game page)
+8. Game summary can be viewed on Games page (Games Page)
+9. Read only board can be viewed on game-log page with turn order and winner displayed (Game-log page)
+
+# Bonus feature
+
+UI has been overhauled on Game and Game log pages to give a better user experience and to easily visualise changes on the screen and hierarchy, design layout and depth. These changes were mainly completed with CSS.
+
 ### `npm test`
 
 Launches the test runner in the interactive watch mode.\

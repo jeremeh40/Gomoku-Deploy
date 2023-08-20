@@ -1,3 +1,5 @@
+/* CSS rules for Game and Log pages both used to render the game board onto the screen */
+
 .board{
     background-color: #f7f8f8;
     flex-direction: column;
@@ -66,43 +68,15 @@
     text-align: center;
 }
 
-.game-container{
-    
-    display:flex;
-    flex-direction: column;
-    margin: auto;
-    margin-top: 20px;
-    width: 70%;
-}
-
-.games{
-    display: flex;
-    justify-content: space-between;
-    border: 1px solid black;
-    margin: 5px;
-    padding: 10px;
-
-}
-
-.individual-games{
-
-    font-size: 1.2em;;
-
-}
-
-.game-log{
-
-    padding: 10px;
-    border-radius: 0.5em;
-    border: 0;
-    box-shadow: 1px 1px 3px cornflowerblue;
-
-}
-
 .button{
 
     padding: 10px;
     border-radius: 0.5em;
     border: 0;
     box-shadow: 1px 1px 3px cornflowerblue;
+}
+
+.button:hover{
+    cursor: pointer;
+
 }

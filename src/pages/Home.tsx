@@ -1,3 +1,6 @@
+/* Home page that allows for selection of game board size and direct to game page
+or login page depending on login status */
+
 import style from './Home.module.css'
 import { useState, useContext } from 'react'
 import { useNavigate } from 'react-router-dom'
@@ -5,16 +8,23 @@ import { UserContext } from '../context'
 
 
 export default function Home() {
+
+  // track state of board size
   const [size, setSize] = useState('size')
   const navigate = useNavigate()
   const { user } = useContext(UserContext)
 
+  /* function to navigate user to login or game page depending on login status */
 
   const handleLogin = () =>{
     if (!user) {return navigate('/login')}
+    //navigate to Game page and send board size state to page aswell
     else if (size !== 'size')
       { navigate('Game', {state: { Size: size}})}
   }
+
+  /* Render form and button to page to allow user to select board size from
+  drop down list and use button to then navigate */
 
   return (
     <>

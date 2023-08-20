@@ -1,3 +1,5 @@
+/* UseLocalStorage hook imported from useHooks.com as seen in Cosc560 tutorial video*/
+
 import { useState } from "react";
 
 export default function useLocalStorage<T> (key:string, initialValue: T){
