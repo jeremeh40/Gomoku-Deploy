@@ -1,6 +1,6 @@
 import express, { Request, Response} from 'express';
 
-const createGameRouter = express.Router();
+const playGameRouter = express.Router();
 
 let board: string[][] = Array.from({ length: 10 }, () => Array.from({ length: 10 }, () => ' '));
 
@@ -73,7 +73,7 @@ const checkWinner = (board: string[][], boardSize: number, player: string) =>{
         
       }
 
-createGameRouter.put("/", async (req: Request, res: Response) => {
+playGameRouter.put("/", async (req: Request, res: Response) => {
     try{
 
         const pieceCoordinate = req.body.coordinate
@@ -103,4 +103,4 @@ createGameRouter.put("/", async (req: Request, res: Response) => {
 
 
 })
-export default createGameRouter
+export default playGameRouter

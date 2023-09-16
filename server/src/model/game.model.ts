@@ -5,7 +5,7 @@ export interface GameDocument extends Document {
     gameBoard: [[string]];
     turnOrder: [string];
     winner: string;
-    createdAt: Date;
+    createdAt: string;
 
 
 }
@@ -16,8 +16,8 @@ const GameSchema = new mongoose.Schema({
     turnOrder: [String],
     winner: String,
     createdAt: {
-        type: Date,
-        default: Date.now
+        type: String,
+        default: Date.now.toString()
     }
 
 

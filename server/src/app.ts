@@ -1,9 +1,11 @@
 import express, {Express, Request, Response} from 'express';
 import dotenv from 'dotenv';
 import mongoose from 'mongoose';
-import gameRouter from '../handler/createGame.Router';
+import playGameRouter from '../handler/playGame.Router';
+import storeGameRouter from '../handler/storeGame.router';
 
 import connectDB from '../util/connectDB';
+import getGameRouter from '../handler/getGames.Router';
 
 dotenv.config();
 
@@ -17,7 +19,9 @@ app.get('/', (req: Request, res: Response)=> {
 });
 
 app.use(express.json())
-app.use('/game', gameRouter)
+app.use('/game', playGameRouter)
+app.use("/storeGame", storeGameRouter)
+app.use("/games", getGameRouter)
 
 
 mongoose.connection.once('connected', () => {
