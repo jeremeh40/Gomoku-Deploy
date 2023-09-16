@@ -1,7 +1,7 @@
 import express, {Express, Request, Response} from 'express';
 import dotenv from 'dotenv';
 import mongoose from 'mongoose';
-import gameRouter from '../handler/game.Router';
+import gameRouter from '../handler/createGame.Router';
 
 import connectDB from '../util/connectDB';
 
