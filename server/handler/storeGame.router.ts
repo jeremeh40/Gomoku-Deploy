@@ -1,7 +1,7 @@
 import express, { Request, Response} from 'express';
 import mongoose from 'mongoose';
 import validate from '../src/middleware/validateSchema';
-import { createGameSchema, getGameSchema } from '../src/schema/game.schema';
+import { createGameSchema } from '../src/schema/game.schema';
 import { appendFile } from 'fs';
 import { createGame } from '../src/service/game.service';
 

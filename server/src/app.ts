@@ -5,7 +5,8 @@ import playGameRouter from '../handler/playGame.Router';
 import storeGameRouter from '../handler/storeGame.router';
 
 import connectDB from '../util/connectDB';
-import getGameRouter from '../handler/getGames.Router';
+import getGameRouter from '../handler/getGame.router';
+import getGamesRouter from '../handler/getGames.Router';
 
 dotenv.config();
 
@@ -21,7 +22,8 @@ app.get('/', (req: Request, res: Response)=> {
 app.use(express.json())
 app.use('/game', playGameRouter)
 app.use("/storeGame", storeGameRouter)
-app.use("/games", getGameRouter)
+app.use("/games", getGamesRouter)
+app.use("/game", getGameRouter)
 
 
 mongoose.connection.once('connected', () => {

@@ -1,7 +1,6 @@
 import mongoose from "mongoose";
 
 export interface GameDocument extends Document {
-    gameId: string;
     gameBoard: [[string]];
     turnOrder: [string];
     winner: string;
@@ -11,7 +10,6 @@ export interface GameDocument extends Document {
 }
 
 const GameSchema = new mongoose.Schema({
-    gameId: String,
     gameBoard: [[String]],
     turnOrder: [String],
     winner: String,

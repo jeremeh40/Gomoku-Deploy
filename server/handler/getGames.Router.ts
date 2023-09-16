@@ -3,12 +3,13 @@ import validate from '../src/middleware/validateSchema';
 
 import { getAllGames } from '../src/service/game.service';
 
-const getGameRouter = express.Router()
+const getGamesRouter = express.Router()
 
-getGameRouter.get('/' , async(req: Request, res: Response) =>{
+getGamesRouter.get('/' , async(req: Request, res: Response) =>{
 
     try{
         const games = await getAllGames()
+        console.log("got all games")
 
         return res.status(200).send(
             games.map((m) =>({
@@ -29,4 +30,4 @@ getGameRouter.get('/' , async(req: Request, res: Response) =>{
 
 })
 
-export default getGameRouter
+export default getGamesRouter
