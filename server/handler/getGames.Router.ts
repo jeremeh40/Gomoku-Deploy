@@ -22,6 +22,7 @@ getGameRouter.get('/' , async(req: Request, res: Response) =>{
 
     }
     catch(err){
+        console.log("error retrieving games: ", err)
         return res.status(500).send(err)
     }
 
