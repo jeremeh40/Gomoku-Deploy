@@ -1,4 +1,4 @@
-import {string, object, TypeOf, array, date } from 'zod'
+import {string, object, TypeOf, array} from 'zod'
 
 const payload = {
     body: object({

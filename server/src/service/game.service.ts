@@ -1,12 +1,12 @@
 
 import gameModel, { GameDocument } from "../model/game.model";
 
-export async function getAllGames() {
+export async function getAllGames(userId: string) {   
 
     return await gameModel.find()
 }
 
-export async function getGamebyId(_id: string){
+export async function getGamebyId(_id: string, userId: string){
     return await gameModel.findById(_id).lean()
 }
 

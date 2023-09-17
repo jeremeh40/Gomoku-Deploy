@@ -7,6 +7,7 @@ import storeGameRouter from '../handler/storeGame.router';
 import connectDB from '../util/connectDB';
 import getGameRouter from '../handler/getGame.router';
 import getGamesRouter from '../handler/getGames.Router';
+import authHandler from '../handler/auth.handler';
 
 dotenv.config();
 
@@ -24,6 +25,7 @@ app.use('/game', playGameRouter)
 app.use("/storeGame", storeGameRouter)
 app.use("/games", getGamesRouter)
 app.use("/game", getGameRouter)
+app.use("/auth", authHandler)
 
 
 mongoose.connection.once('connected', () => {

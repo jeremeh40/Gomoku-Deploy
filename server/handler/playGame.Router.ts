@@ -1,6 +1,8 @@
 import express, { Request, Response} from 'express';
+import { deserializeUser } from '../src/middleware/deserialiseUser';
 
 const playGameRouter = express.Router();
+playGameRouter.use(deserializeUser)
 
 let board: string[][] = Array.from({ length: 10 }, () => Array.from({ length: 10 }, () => ' '));
 

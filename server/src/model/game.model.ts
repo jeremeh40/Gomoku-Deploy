@@ -1,6 +1,8 @@
 import mongoose from "mongoose";
+import { UserDocument } from "./user.model";
 
 export interface GameDocument extends Document {
+    userId: UserDocument["_id"]
     gameBoard: [[string]];
     turnOrder: [string];
     winner: string;
@@ -10,6 +12,7 @@ export interface GameDocument extends Document {
 }
 
 const GameSchema = new mongoose.Schema({
+    userId: {type: mongoose.Schema.Types.ObjectId, ref: "User"},
     gameBoard: [[String]],
     turnOrder: [String],
     winner: String,

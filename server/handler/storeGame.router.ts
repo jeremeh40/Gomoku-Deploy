@@ -4,16 +4,20 @@ import validate from '../src/middleware/validateSchema';
 import { createGameSchema } from '../src/schema/game.schema';
 import { appendFile } from 'fs';
 import { createGame } from '../src/service/game.service';
+import { deserializeUser } from '../src/middleware/deserialiseUser';
 
 const storeGameRouter = express.Router();
+storeGameRouter.use(deserializeUser)
 
 storeGameRouter.post("/", validate(createGameSchema), async(req: Request, res: Response) => {
 
     try{
 
+        const userId = req.userId
+
         const game: {} = req.body
         console.log(game)
-        const newGame = await createGame({...game})
+        const newGame = await createGame({...game, userId})
         return res.status(200).json(newGame)
 
     } catch (err){
