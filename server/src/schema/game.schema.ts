@@ -20,8 +20,16 @@ export const createGameSchema = object({
     ...payload
 })
 
+
+
 export const getGameByIdSchema = object({
     ...getParams
+})
+
+export const updateGameSchema = object({
+    ...payload,
+    ...getParams    
+
 })
 
 export type CreateGameInput = TypeOf<typeof createGameSchema>

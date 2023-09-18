@@ -5,6 +5,7 @@ import { createGame } from '../src/service/game.service';
 import { deserializeUser } from '../src/middleware/deserialiseUser';
 
 const newGameRouter = express.Router();
+newGameRouter.use(deserializeUser)
 
 newGameRouter.post("/", async(req:Request, res:Response)=> {
 

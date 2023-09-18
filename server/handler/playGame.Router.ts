@@ -1,16 +1,21 @@
 import express, { Request, Response} from 'express';
 import { deserializeUser } from '../src/middleware/deserialiseUser';
+import { getGameByIdSchema } from '../src/schema/game.schema';
+import { getGamebyId, updateGame } from '../src/service/game.service';
+
 
 const playGameRouter = express.Router();
 playGameRouter.use(deserializeUser)
 
-let board: string[][] = Array.from({ length: 10 }, () => Array.from({ length: 10 }, () => ' '));
+let count: number = 0;
 
-function initialBoard(size: number) {
-    const emptyBoard: string[][] = Array.from({ length: size }, () => Array.from({ length: size }, () => ' '));
+// let board: string[][] = Array.from({ length: 10 }, () => Array.from({ length: 10 }, () => ' '));
 
-    return emptyBoard;
-}
+// function initialBoard(size: number) {
+//     const emptyBoard: string[][] = Array.from({ length: size }, () => Array.from({ length: size }, () => ' '));
+
+//     return emptyBoard;
+// }
 
 const checkWinner = (board: string[][], boardSize: number, player: string) =>{
 
@@ -65,7 +70,7 @@ const checkWinner = (board: string[][], boardSize: number, player: string) =>{
           }
       }
       //if players have used all available turns that match the size of the board then draw state is set
-      if (board.some(row => !row.includes(' '))){
+      if(count === boardSize * boardSize){
         winner = 'draw'
         return winner
     }
@@ -75,29 +80,60 @@ const checkWinner = (board: string[][], boardSize: number, player: string) =>{
         
       }
 
-playGameRouter.put("/", async (req: Request, res: Response) => {
+playGameRouter.put("/:_id", async (req: Request, res: Response) => {
     try{
 
         const pieceCoordinate = req.body.coordinate
-        const boardSize: number = req.body.boardSize
         const player: string = req.body.player
+        const gameId = req.params._id
+        const userId = req.userId
 
         console.log(pieceCoordinate)
-        console.log(boardSize)
         console.log(player)
+        console.log(gameId)
 
         const r: number = parseInt(pieceCoordinate.split('-')[0])
-        const c: number = parseInt(pieceCoordinate.split('-')[1])        
-       
-        if (boardSize && boardSize !== board.length){
-            board = initialBoard(boardSize)
+        const c: number = parseInt(pieceCoordinate.split('-')[1])
+        
+        const game = await getGamebyId(gameId, userId)
+
+        if(!game){
+            return res.sendStatus(404)
         }
+
+        const board = game.gameBoard;
+        const boardSize = game.gameBoard.length
+        const turnOrder = game.turnOrder
+        turnOrder.push(pieceCoordinate)
+
+        console.log(boardSize)
         board[r][c] = player
+        console.log(count)
+        count +=1
+        console.log(count)
         const result = checkWinner(board, boardSize, player)
-        const response = {
-            "result": result
+        console.log(result)
+
+        if(result === "black" || result === "white" || result === "draw"){
+            game.winner = result
+            count = 0
         }
-        res.status(200).json(response)
+
+        const userGame = {
+            gameBoard: board,
+            turnOrder: turnOrder,
+            winner: game.winner
+        }
+
+        console.log(game)
+
+            const changeGame = await updateGame(gameId, userId, {...userGame, userId})
+
+        console.log(changeGame)
+
+        if(!changeGame) return res.sendStatus(404)
+
+        res.status(200).json(changeGame)
     }
     catch(err){
         return res.status(500).send(err)
@@ -105,4 +141,36 @@ playGameRouter.put("/", async (req: Request, res: Response) => {
 
 
 })
+
+
+// playGameRouter.put("/", async (req: Request, res: Response) => {
+//     try{
+
+//         const pieceCoordinate = req.body.coordinate
+//         const boardSize: number = req.body.boardSize
+//         const player: string = req.body.player
+
+//         console.log(pieceCoordinate)
+//         console.log(boardSize)
+//         console.log(player)
+
+//         const r: number = parseInt(pieceCoordinate.split('-')[0])
+//         const c: number = parseInt(pieceCoordinate.split('-')[1])        
+       
+//         if (boardSize && boardSize !== board.length){
+//             board = initialBoard(boardSize)
+//         }
+//         board[r][c] = player
+//         const result = checkWinner(board, boardSize, player)
+//         const response = {
+//             "result": result
+//         }
+//         res.status(200).json(response)
+//     }
+//     catch(err){
+//         return res.status(500).send(err)
+//     }
+
+
+// })
 export default playGameRouter

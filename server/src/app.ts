@@ -27,7 +27,7 @@ app.use("/newGame", newGameRouter)
 app.use("/games", getGamesRouter)
 app.use("/game", getGameRouter)
 app.use("/auth", authHandler)
-app.use("/storeGame", storeGameRouter)
+// app.use("/storeGame", storeGameRouter)
 
 
 mongoose.connection.once('connected', () => {
