@@ -5,7 +5,6 @@ import style from './Login.module.css'
 import { useState, useContext } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { UserContext } from '../context'
-import users from '../data/users.json'
 
 export default function Login() {
   //track states for username and password and whether they match, and user is logged in
@@ -13,22 +12,37 @@ export default function Login() {
   const navigate = useNavigate()
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
-  const [isCredentialInvald, setIsCredentialInvald] = useState(false)
+  const [errorMessage, setErrorMessage] = useState('')
 
 
   /* match user login against defined username and password from users.json file 
   and if it matches navigate to home page, if no match CredentialInvalid state is updated */
-  const handleLogin = () =>{
-    const user = users.find(
-      (u) => u.username === username && u.password === password)
-      if(!user){
-        setIsCredentialInvald(true)
-      }
-      else{
-        login(username)
-        navigate('/')
-      }
+  const handleLogin = async() =>{
+
+    setErrorMessage('')
+    const result = await (login(username, password))
+    if (result === true){
+      navigate("/")
+    }
+    else{
+      setErrorMessage(result)
+    }
   }
+
+
+
+
+
+  //   const user = users.find(
+  //     (u) => u.username === username && u.password === password)
+  //     if(!user){
+  //       setIsCredentialInvald(true)
+  //     }
+  //     else{
+  //       login(username)
+  //       navigate('/')
+  //     }
+  // }
 
   /* render login page. Form that takes username and password inputs and runs handleLogin function
   to determine matches. Contains error handling if username or password do not match */
@@ -40,7 +54,7 @@ export default function Login() {
       handleLogin()
     }}
     >
-      {isCredentialInvald && <div className={style.message}>Invalid username or password</div>}
+      {errorMessage && <div className={style.message}>{errorMessage}</div>}
       <input className={style.username} 
       name="username" 
       type="text" 
@@ -48,7 +62,7 @@ export default function Login() {
       value ={username}
       onChange={(e) => 
         {setUsername(e.target.value)
-        setIsCredentialInvald(false)}}
+        setErrorMessage('')}}
       />
       <input className={style.password} 
       name= "password" 
@@ -57,7 +71,7 @@ export default function Login() {
       value={password}
       onChange={(e) => 
         {setPassword(e.target.value)
-        setIsCredentialInvald(false)}}
+          setErrorMessage('')}}
       />
       <button className={style.button} type ="submit">Login</button>
     </form>

@@ -2,33 +2,38 @@ import style from './Login.module.css'
 import { useState, useContext } from 'react'
 import { useNavigate } from 'react-router-dom'
 import users from '../data/users.json'
+import { UserContext } from '../context'
+import { isRegularExpressionLiteral } from 'typescript'
 
 
 export default function SignUp() {
-
+    const {signUp} = useContext(UserContext)
     const [username, setUsername] = useState('')
     const [password, setPassword] = useState('')
     const [confirmPassword, setConfirmPassword] = useState('')
     const [errorMessage, setErrorMessage] = useState('')
 
-    const handleSignUp = () => {
+    const navigate = useNavigate()
+
+    const handleSignUp = async () => {
 
         setErrorMessage('')
 
-        if (users.find((u) => u.username === username)) {
-            setErrorMessage(`Username ${username} has been taken`)
-            return
-
-        }
         if (password !== confirmPassword){
             setErrorMessage('Passwords do not match')
             return;
         }
 
-        else{
-     
+        const result = await signUp(username, password)
+        if(result===true){
+            navigate('/')
 
         }
+        else{
+            setErrorMessage(result)
+        }
+
+    
 
 
 
@@ -47,7 +52,7 @@ export default function SignUp() {
             handleSignUp()
         }}>
 
-            {errorMessage && <div className={style.message}>Passwords do not match</div>} 
+            {errorMessage && <div className={style.message}>{errorMessage}</div>} 
 
             <input className={style.username} 
             name = "username" 

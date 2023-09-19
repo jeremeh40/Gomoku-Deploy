@@ -9,6 +9,7 @@ import connectDB from '../util/connectDB';
 import getGameRouter from '../handler/getGame.router';
 import getGamesRouter from '../handler/getGames.Router';
 import authHandler from '../handler/auth.handler';
+import cors from 'cors'
 
 dotenv.config();
 
@@ -17,16 +18,22 @@ connectDB();
 const app: Express = express();
 const port = process.env.PORT;
 
-app.get('/', (req: Request, res: Response)=> {
-    res.send('hello world');
-});
+// app.get('/', (req: Request, res: Response)=> {
+//     res.send('hello world');
+// });
+
+app.use(
+    cors({
+      origin: process.env.allowHost || true,
+    })
+  )
 
 app.use(express.json())
 app.use('/game', playGameRouter)
 app.use("/newGame", newGameRouter)
 app.use("/games", getGamesRouter)
 app.use("/game", getGameRouter)
-app.use("/auth", authHandler)
+app.use("/api/auth", authHandler)
 // app.use("/storeGame", storeGameRouter)
 
 

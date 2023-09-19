@@ -1,14 +1,15 @@
 /* Component that renders header on all pages of the app */
 
 import style from './Header.module.css'
-import { Link, useNavigate } from 'react-router-dom'
+import { Link, useNavigate, useLocation } from 'react-router-dom'
 import { UserContext } from '../context';
 import { useContext } from 'react';
 
 export default function Header() {
   //define user and navigate constants
-  const { user } = useContext(UserContext)
+  const { user, logout } = useContext(UserContext)
   const navigate = useNavigate();
+  const location = useLocation();
 
 
   /* getActions function that changes naviagation options in header depending on if use is logged in or not*/
@@ -18,12 +19,20 @@ export default function Header() {
       <>
       
         <button className={style.button} onClick={() => navigate('Games')}>Previous Games</button>
+
+        <button className={style.button} onClick= {() => {logout(); navigate('/')}}>Logout</button>
       
       </>
       )
     } else {
-      return(
-        <button className={style.button} onClick={() => navigate('login')}>Login</button>
+      return location.pathname !== '/login' ? (
+        <button className={style.button} onClick={() => navigate('login')}>
+          Login
+        </button>
+      ) : (
+        <button className={style.button} onClick={() => navigate('SignUp')}>
+          Sign Up
+        </button>
       )
 
     }
