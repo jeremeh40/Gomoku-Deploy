@@ -30,7 +30,7 @@ app.use(
 
 app.use(express.json())
 app.use('/game', playGameRouter)
-app.use("/newGame", newGameRouter)
+app.use("/api/newGame", newGameRouter)
 app.use("/games", getGamesRouter)
 app.use("/game", getGameRouter)
 app.use("/api/auth", authHandler)
