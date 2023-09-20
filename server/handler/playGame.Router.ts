@@ -1,7 +1,8 @@
 import express, { Request, Response} from 'express';
 import { deserializeUser } from '../src/middleware/deserialiseUser';
-import { getGameByIdSchema } from '../src/schema/game.schema';
-import { getGamebyId, updateGame } from '../src/service/game.service';
+import { deleteGameSchema, getGameByIdSchema } from '../src/schema/game.schema';
+import { deleteGame, getGamebyId, updateGame } from '../src/service/game.service';
+import validate from '../src/middleware/validateSchema'
 
 
 const playGameRouter = express.Router();
@@ -83,8 +84,9 @@ const checkWinner = (board: string[][], boardSize: number, player: string) =>{
 playGameRouter.put("/:_id", async (req: Request, res: Response) => {
     try{
 
-        const pieceCoordinate = req.body.coordinate
-        const player: string = req.body.player
+        const pieceCoordinate = req.body.pieceCoordinate
+        const userTurnOrder = req.body.turnOrder
+        const player: string = req.body.currentPlayer
         const gameId = req.params._id
         const userId = req.userId
 
@@ -141,6 +143,16 @@ playGameRouter.put("/:_id", async (req: Request, res: Response) => {
 
 
 })
+
+playGameRouter.delete("/:_id", validate(deleteGameSchema), async (req:Request, res:Response)=> {
+    const userId = req.userId
+    const gameId = req.params._id
+    await deleteGame(gameId, userId)
+
+    return res.sendStatus(200)
+})
+
+
 
 
 // playGameRouter.put("/", async (req: Request, res: Response) => {

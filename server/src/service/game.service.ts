@@ -45,3 +45,17 @@ export async function createGame(input: Partial<GameDocument>) {
         }
 
     }
+
+
+    export async function deleteGame(id: string, userId:string){
+        try{
+            return gameModel.deleteOne({
+                _id: new mongoose.Types.ObjectId(id),
+                userId: new mongoose.Types.ObjectId(userId)
+            })
+        }
+        catch(err){
+            console.log(err)
+
+        }
+    }

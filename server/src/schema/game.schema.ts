@@ -32,5 +32,11 @@ export const updateGameSchema = object({
 
 })
 
+export const deleteGameSchema = object({
+    ...getParams
+})
+
 export type CreateGameInput = TypeOf<typeof createGameSchema>
 export type ReadGameInput = TypeOf<typeof getGameByIdSchema>
+export type UpdateGameInput = TypeOf<typeof updateGameSchema>
+export type DeleteGameInput = TypeOf<typeof deleteGameSchema>

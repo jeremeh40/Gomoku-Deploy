@@ -18,8 +18,9 @@ getGamesRouter.get('/' , async(req: Request, res: Response) =>{
         return res.status(200).send(
             games.map((m) =>({
                 _id: m._id,
-                winner: m.winner,
-                date: m.createdAt
+                gameBoard: m.gameBoard,
+                turnOrder: m.turnOrder,
+                winner: m.winner
 
 
             })

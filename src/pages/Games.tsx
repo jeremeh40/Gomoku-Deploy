@@ -3,12 +3,28 @@
 import { useLocalStorage } from "../hooks"
 import { useNavigate, Navigate } from "react-router-dom"
 import { UserContext } from "../context";
-import { useContext } from "react";
+import { useContext,useState, useEffect } from "react";
 import style from './Games.module.css'
+import { get } from "http";
+import { game } from "../types/game";
 
 export default function Games() {
   //import games object from local storage
-  const [games] = useLocalStorage<Record<string,string[][]>>('games', {})
+  const [games, setGames] = useState<game[]>([])
+  const API_HOST = process.env.API_HOST || ''
+  const getGames = async() => {
+  
+    try{
+
+      const allGames = await get(`${API_HOST}/api/games`)
+      console.log(allGames)
+
+    }
+    catch(err){
+      console.log(err)
+    }
+  }
+
 
   const navigate = useNavigate();
   const {user} = useContext(UserContext);

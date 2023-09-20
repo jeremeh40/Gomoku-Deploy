@@ -6,6 +6,7 @@ import { useState, useContext } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { UserContext } from '../context'
 import { post, setToken } from '../utils/http'
+import { game } from '../types/game'
 
 
 export default function Home() {
@@ -23,17 +24,23 @@ export default function Home() {
     //navigate to Game page and send board size state to page aswell
     else if (size !== 'size'){
       try{
-      const createGame = await post(`${API_HOST}/api/newGame`,{
+      const createGame: game = await post(`${API_HOST}/api/newGame`,{
         boardSize: size
       })
 
       console.log(createGame)
+      if(!createGame){
+        return
+
+      }
+      const gameId: string = createGame._id
+      console.log(gameId)
 
       if(!createGame){
         return
       }
 
-      navigate('Game', {state: { game: createGame}})
+      navigate(`game/${gameId}`, {state: { game: createGame}})
     
     }
       catch(err){
@@ -43,30 +50,6 @@ export default function Home() {
       }
 
       }
-
-        
-
-      // const login = async (username: string, password: string) => {
-      //   try {
-      //     const user = await post<Credential, User>(`${API_HOST}/api/auth/login`, {
-      //       username,
-      //       password,
-      //     })
-      //     setUser(user)
-      //     setToken(user.token)
-      //     return true
-      //   } catch (error) {
-      //     if (error instanceof Error) {
-      //       return error.message
-      //     }
-      //     return 'Unable to login at this moment, please try again'
-      //   }
-      // }
-
-
-
-  //     
-  // }
 
   /* Render form and button to page to allow user to select board size from
   drop down list and use button to then navigate */
