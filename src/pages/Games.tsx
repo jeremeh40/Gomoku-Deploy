@@ -5,25 +5,32 @@ import { useNavigate, Navigate } from "react-router-dom"
 import { UserContext } from "../context";
 import { useContext,useState, useEffect } from "react";
 import style from './Games.module.css'
-import { get } from "http";
+import { get } from "../utils/http";
 import { game } from "../types/game";
 
 export default function Games() {
   //import games object from local storage
   const [games, setGames] = useState<game[]>([])
-  const API_HOST = process.env.API_HOST || ''
-  const getGames = async() => {
+  const API_HOST = process.env.API_HOST || '';  
+  
+  const getGames = async () => {
   
     try{
 
-      const allGames = await get(`${API_HOST}/api/games`)
+      const allGames = await get<game[]>(`${API_HOST}/api/games`)
+      setGames(allGames)
       console.log(allGames)
+      console.log(games)
 
     }
     catch(err){
       console.log(err)
     }
   }
+
+  useEffect(()=>{
+    getGames()
+  }, [])
 
 
   const navigate = useNavigate();
@@ -39,23 +46,31 @@ export default function Games() {
     
     <div className={style.container}>
       <h2 className={style.gameCount}>Previous games: {Object.keys(games).length}</h2>
-      {Object.keys(games).map((key)=>{
-        const gameNumber = key.split('-')[1]
-        const winner = key.split('-')[0]
-        const date = new Date()
-        const month = date.getMonth() +1;
-        const day = date.getDate()
-        const year = date.getFullYear()
 
-        return(
-          <div className={style.games} key={key}>
-            <p className={style.individualGames}> Game #{gameNumber} @{day}/{month}/{year} Winner: {winner || 'Draw'}</p>
+      {games.map(({winner, _id, createdAt}, index) => {
+        createdAt = new Date()
+        const gameId = _id
+        const month = createdAt.getMonth() +1;
+        const day = createdAt.getDate()
+        const year = createdAt.getFullYear()
+      return (
+          <div className={style.games} key={_id}>
+            <p className={style.individualGames}> Game #{index+1} @{day}/{month}/{year} Winner: {winner}</p>
             <button className={style.button}
-            onClick={() => navigate(`../game-log/${gameNumber}`)}> View Game Log</button>
+            onClick={() => navigate(`../game-log/${gameId}`)}> View Game Log</button>
 
           </div>
         )
-
       })}
+
+
       </div>
-)}
+  )
+
+
+
+    }
+
+
+
+

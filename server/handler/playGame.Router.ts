@@ -10,6 +10,8 @@ playGameRouter.use(deserializeUser)
 
 let count: number = 0;
 
+
+
 // let board: string[][] = Array.from({ length: 10 }, () => Array.from({ length: 10 }, () => ' '));
 
 // function initialBoard(size: number) {
@@ -86,13 +88,20 @@ playGameRouter.put("/:_id", async (req: Request, res: Response) => {
 
         const pieceCoordinate = req.body.pieceCoordinate
         const userTurnOrder = req.body.turnOrder
+        console.log(userTurnOrder)
         const player: string = req.body.currentPlayer
         const gameId = req.params._id
         const userId = req.userId
 
-        console.log(pieceCoordinate)
-        console.log(player)
-        console.log(gameId)
+        if (userTurnOrder.length === 1){
+            count = 0
+            
+        }
+        
+
+        // console.log(pieceCoordinate)
+        // console.log(player)
+        // console.log(gameId)
 
         const r: number = parseInt(pieceCoordinate.split('-')[0])
         const c: number = parseInt(pieceCoordinate.split('-')[1])
@@ -114,7 +123,7 @@ playGameRouter.put("/:_id", async (req: Request, res: Response) => {
         count +=1
         console.log(count)
         const result = checkWinner(board, boardSize, player)
-        console.log(result)
+        // console.log(result)
 
         if(result === "black" || result === "white" || result === "draw"){
             game.winner = result
@@ -127,11 +136,11 @@ playGameRouter.put("/:_id", async (req: Request, res: Response) => {
             winner: game.winner
         }
 
-        console.log(game)
+        // console.log(game)
 
             const changeGame = await updateGame(gameId, userId, {...userGame, userId})
 
-        console.log(changeGame)
+        // console.log(changeGame)
 
         if(!changeGame) return res.sendStatus(404)
 
@@ -147,6 +156,8 @@ playGameRouter.put("/:_id", async (req: Request, res: Response) => {
 playGameRouter.delete("/:_id", validate(deleteGameSchema), async (req:Request, res:Response)=> {
     const userId = req.userId
     const gameId = req.params._id
+    console.log("userID: "+userId)
+    console.log("gameId: " +gameId)
     await deleteGame(gameId, userId)
 
     return res.sendStatus(200)

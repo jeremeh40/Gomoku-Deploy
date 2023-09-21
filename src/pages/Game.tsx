@@ -15,6 +15,7 @@ export default function Game() {
   const {user} = useContext(UserContext);
   const {gameId} = useParams()
   const navigate = useNavigate()
+  const [isLoading, setIsLoading] = useState(false)
 
    //import size of board from home page
   const {state} = useLocation()
@@ -41,88 +42,7 @@ export default function Game() {
   const [gameover, setGameOver] = useState(false);
   let [currentPlayer, setCurrentPlayer] = useState('black');
   const[isWinner, setisWinner] = useState('')
-
-
-  /*checkWinner() function that loops through the 2d array 'board' and checks vertically, 
-  horizontally, and diagonally for 5 pieces in a row. If 5 in a row found, then setGameOver function is run*/
-
-  // const checkWinner = () =>{
-  //   //horizontal check
-  //   for(let r=0; r<boardSize; r++){
-  //     for(let c = 0; c< boardSize - 4; c++){
-  //         if (board[r][c] !== ' '){
-  //             if (board[r][c] === board[r][c+1] && board[r][c+1] === board[r][c+2] && board[r][c+2] === board[r][c+3] && board[r][c+3] === board[r][c+4]){
-                  
-  //                 setGameOver(true)
-  //                 winner = currentPlayer
-                
-  //                 return;
-  //             }   
-  //         }      
-  //     }
-  // }
-  //   //vertical check
-  //   for(let c=0; c<boardSize; c++){
-  //     for(let r=0; r<boardSize -4 ; r++){
-  //         if(board[r][c] !== ' '){
-  //             if(board[r][c] === board[r+1][c] && board[r+1][c] === board[r+2][c] && board[r+2][c] === board[r+3][c] && board[r+3][c] === board[r+4][c]){
-  //               setGameOver(true)
-  //               winner = currentPlayer
-  //               return;
-  //             }
-  //         }
-  //     }
-  // }
-  //   //diagonal check
-  //     for(let r=0; r<boardSize -4; r++){
-  //         for(let c=0; c<boardSize -4; c++){
-  //             if(board[r][c] !== ' '){
-  //                 if(board[r][c] === board[r+1][c+1] && board[r+1][c+1] === board[r+2][c+2] && board[r+2][c+2] === board[r+3][c+3] && board[r+3][c+3] === board[r+4][c+4]){
-  //                   setGameOver(true)
-  //                   winner = currentPlayer
-  //                   console.log(winner)
-  //                   return;
-  //                 }
-  //             }
-  //         }
-  //     }
-  //   //anti-diagonal check
-  //     for(let r=4; r<boardSize; r++){
-  //         for(let c=0; c<boardSize -4 ; c++){
-  //             if(board[r][c] !== ' '){
-  //                 if(board[r][c] === board[r-1][c+1] && board[r-1][c+1] === board[r-2][c+2] && board[r-2][c+2] === board[r-3][c+3] && board[r-3][c+3] === board[r-4][c+4]){
-  //                   setGameOver(true)
-  //                   winner = currentPlayer
-  //                   return;
-  //                 }
-  //             }
-  //         }
-  //     }
-  //     //if players have used all available turns that match the size of the board then draw state is set
-  //     if(count === boardSize * boardSize){        
-  //       setIsDraw(true)
-  //       winner = 'Draw'
-  //       return;
-  //     }
-  //       }
-  
-  /* function that is run when the leave game button is pressed. if game is over it 
-  saves current game into localstorage and navigates user to games page and resets 
-  game with resetGame() function
-  if Game is not finished it will only reset the game*/
-        
-  // const leaveGame = () =>{
-
-  //   if (gameover || isDraw){
-  //     saveGames({...games, [`${winner}-${gameCount}`]: {board, turnOrder}})
-  //     navigate('/games')      
-  //     gameCount += 1;      
-  //     resetGame()
-
-  //   }
-  //   else { resetGame()
-  //   }
-  // }
+ 
 
   /* Function that handles the click on each game cell and updates the board and
   turn order and also checks for a winner with each click */
@@ -130,6 +50,10 @@ export default function Game() {
   const handleClick = async (row:number, col:number) =>{
     try{
     //block clicks if game is over 
+
+    if(isLoading === true){
+      return;
+    }
 
     if(isWinner!== ''){
       return;
@@ -144,6 +68,8 @@ export default function Game() {
     const coordinate = `${row}-${col}`
     turnOrder.push(coordinate)
 
+    setIsLoading(true)
+
     const playerTurn:game = await put(`${API_HOST}/api/game/${gameId}`,{
       pieceCoordinate: coordinate,
       turnOrder: turnOrder,
@@ -151,24 +77,14 @@ export default function Game() {
 
     })
 
+    setIsLoading(false)
+
     const newBoard =playerTurn.gameBoard
     setisWinner(playerTurn.winner)
 
-
-
-
-
-
     //board and turn order updated with each click
-    // const updatedBoard = [...newBoard];
     setBoard(newBoard);
 
-
-    // count += 1;
-    // const updatedTurnOrder = [...turnOrder, `${row}-${col}`];
-    // setTurnOrder(updatedTurnOrder);
-    // //check for winner with each click
-    // checkWinner()
 
     //change current player depending on previous player turn
     if(currentPlayer === 'black'){
@@ -181,6 +97,7 @@ export default function Game() {
   }
   catch(err){
     console.log(err)
+    setIsLoading(false)
   }
   }
   // onClick={()=> handleClick(row, col)}
@@ -244,8 +161,8 @@ export default function Game() {
     <div className="main">
       <div className="game-info">
         {currentPlayer && isWinner === '' && <h2>Current Player: {currentPlayer}</h2>}
-        {isWinner !== '' && <h2> Congratulations {isWinner} You won!</h2>}
-        {winner === 'draw' && <h2> No more available moves! it's a draw</h2>}
+        {isWinner === 'black' || isWinner === 'white' && <h2> Congratulations {isWinner} You won!</h2>}
+        {isWinner === 'draw' && <h2> No more available moves! it's a draw</h2>}
 
       </div>
 
@@ -254,7 +171,7 @@ export default function Game() {
         {renderBoard()}
       </div>
       <div className="options">
-        <button className="button" onClick={() => resetGame()}>Restart</button>
+        <button className="button" disabled = {turnOrder.length === 0} onClick={() => resetGame()}>Restart</button>
         <button className="button" disabled = {isWinner ===''} onClick={() => navigate('/games')} >Leave</button>
       </div>
 

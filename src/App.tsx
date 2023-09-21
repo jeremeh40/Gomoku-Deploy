@@ -24,7 +24,7 @@ function App() {
       <Route path= 'signup' element = {<SignUp/>}/>
       <Route path='game/:gameId' element = {<Game/>}/>
       <Route path='games' element = {<History/>}/>
-      <Route path='game-log/:id' element = {<Log/>}/>
+      <Route path='game-log/:gameId' element = {<Log/>}/>
       <Route path='*' element = {<Navigate to = "/" replace />}/>
 
 

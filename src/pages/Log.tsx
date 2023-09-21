@@ -5,9 +5,32 @@ it to the page with the board, turn order and winner displayed */
 import { useParams, useNavigate, Navigate } from "react-router-dom"
 import { useLocalStorage } from "../hooks"
 import { UserContext } from "../context";
-import { useContext } from "react";
+import { useContext,useEffect,useState } from "react";
+import {get} from "../utils/http"
+import { game } from "../types/game";
+import { object } from "zod";
 
 export default function Log() {
+
+  const { gameId } = useParams()
+  console.log(gameId)
+  const navigate = useNavigate()
+  const {user} = useContext(UserContext);
+
+  const API_HOST = process.env.API_HOST || ''
+
+  const initialGameData:game = {
+      gameBoard: [],
+      turnOrder: [],
+      winner: '',
+      _id: '',
+      createdAt: new Date()
+  
+    }
+
+
+  const [gameDetails,setGameDetails] = useState<game>(initialGameData)
+
 
   //define Gamedata object
 
@@ -17,17 +40,38 @@ export default function Log() {
   };
 
   //import games object from local storage
-  const [games] = useLocalStorage<Record<string,GameData>>('games', {})
-  // define page id for matching with game number
-  const { id } = useParams()
-  const navigate = useNavigate()
-  const {user} = useContext(UserContext);
+  const getGameDetails = async () =>{
+    try{
+      console.log(gameId)
 
+    const getGame = await get<game>(`${API_HOST}/api/gameDetails/${gameId}`)
+    setGameDetails(getGame)
+    console.log(gameDetails)
+    const board = gameDetails.gameBoard
+    const turns = gameDetails.turnOrder
+    const winner = gameDetails.winner
+
+    }
+    catch(err){
+      console.log(err)
+    }
+
+
+  } 
+
+  useEffect(()=>{
+    getGameDetails()
+  },[])
+
+
+  
+  // define page id for matching with game number
+ 
   // if user not logged in navigate to login page
   if(!user)
   return <Navigate to = '/login'/>;
 
-  if(!id) return null
+  if(!gameId) return null
 
   /* function to render each Cell giving the cell an unique id, classname and turn order in the board
   Params: row and column of cell in 2d array, turns - array of order of turns of game
@@ -79,20 +123,9 @@ export default function Log() {
 
   /* Read only game board of previously completed game rendered to the page with turn order also displayed */
 
-  return (
-    <div>
 
-    {Object.keys(games).map((key)=>{
-    const gameNumber = key.split('-')[1]
-    const winner = key.split('-')[0]
-    //match page id and gamenumber to only display the desired game
-    if(parseInt(gameNumber) === parseInt(id)){
-      //define constants from local storage games Object
-      const currentGame =games[winner+'-'+ gameNumber]
-      const currentBoard: string[][] = currentGame['board']
-      const currentTurns: string[] = currentGame['turnOrder']
 
-       /* Read only game board of previously completed game rendered to the page with turn order also displayed */
+          /* Read only game board of previously completed game rendered to the page with turn order also displayed */
 
       return (
 
@@ -100,15 +133,15 @@ export default function Log() {
 
           <div className="game-info">
 
-          <h2> Winner: {winner || 'draw'}</h2>
+          <h2> Winner: {gameDetails.winner}</h2>
 
           </div>
 
 
-        <div className="board" key ={id}>
+        <div className="board" key ={gameDetails._id}>
                   
         
-          {renderBoard(currentBoard, currentTurns)}
+          {renderBoard(gameDetails.gameBoard, gameDetails.turnOrder)}
 
         </div>
 
@@ -121,8 +154,3 @@ export default function Log() {
         </div>        
         
   )}
-  })}
-
-      </div>
-  )
-}

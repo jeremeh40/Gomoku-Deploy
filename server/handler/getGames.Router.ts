@@ -20,7 +20,8 @@ getGamesRouter.get('/' , async(req: Request, res: Response) =>{
                 _id: m._id,
                 gameBoard: m.gameBoard,
                 turnOrder: m.turnOrder,
-                winner: m.winner
+                winner: m.winner,
+                createdAt:m.createdAt
 
 
             })
