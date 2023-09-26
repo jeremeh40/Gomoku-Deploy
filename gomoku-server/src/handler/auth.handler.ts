@@ -1,3 +1,5 @@
+/* Handle authentication from front end. Handles both the Login and Signup post requests */
+
 import bcrypt from 'bcryptjs';
 import express, {Request, Response} from 'express'
 import validate from '../middleware/validateSchema'
@@ -7,6 +9,7 @@ import { signJwt } from '../../util/jwt';
 
 const authHandler = express.Router()
 
+//Post request to validate registering new user,  storing credentials in database
 authHandler.post(
     '/register',
     validate(registerSchema),
@@ -37,6 +40,7 @@ authHandler.post(
     }
   )
   
+  //Post request to handle login, matching credentials to those found in database
   authHandler.post(
     '/login',
     async (req: Request<{}, {}, LoginInput['body']>, res: Response) => {

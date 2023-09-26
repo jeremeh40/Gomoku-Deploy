@@ -1,3 +1,5 @@
+/* Model for user that is stored in database */
+
 import mongoose, {Document} from 'mongoose';
 
 export interface UserDocument extends Document {

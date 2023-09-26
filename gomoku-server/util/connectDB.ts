@@ -1,3 +1,5 @@
+/* Function to connect database to server */
+
 import mongoose from "mongoose";
 
 const connectDB = async() => {

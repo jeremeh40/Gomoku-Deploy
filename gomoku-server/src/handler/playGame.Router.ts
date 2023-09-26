@@ -1,28 +1,20 @@
+/* Handle the playing of the gomoku game. Handle request from user with where a piece has been placed, update board,
+calculate if there is a winner or draw, update board in database, and send updated board to frontend. Also handle delete request */
 import express, { Request, Response} from 'express';
 import { deserializeUser } from '../middleware/deserialiseUser';
-import { deleteGameSchema, getGameByIdSchema } from '../schema/game.schema';
+import { deleteGameSchema, updateGameSchema } from '../schema/game.schema';
 import { deleteGame, getGamebyId, updateGame } from '../service/game.service';
 import validate from '../middleware/validateSchema'
-
 
 const playGameRouter = express.Router();
 playGameRouter.use(deserializeUser)
 
 let count: number = 0;
 
-
-
-// let board: string[][] = Array.from({ length: 10 }, () => Array.from({ length: 10 }, () => ' '));
-
-// function initialBoard(size: number) {
-//     const emptyBoard: string[][] = Array.from({ length: size }, () => Array.from({ length: size }, () => ' '));
-
-//     return emptyBoard;
-// }
-
+//Function the check if there is a winner or draw in the gomoku game
 const checkWinner = (board: string[][], boardSize: number, player: string) =>{
 
-    let winner:string = 'continue';
+    let winner:string = '';
 
     //horizontal check
     for(let r=0; r<boardSize; r++){
@@ -78,17 +70,17 @@ const checkWinner = (board: string[][], boardSize: number, player: string) =>{
         return winner
     }
 
-    return winner
-
-        
+    return winner        
       }
 
-playGameRouter.put("/:_id", async (req: Request, res: Response) => {
+/*Handle Put request from user, update board using user turn, check for winner, store updated game object in database
+and respond with updated game object to user*/
+
+playGameRouter.put("/:_id", validate(updateGameSchema), async (req: Request, res: Response) => {
     try{
 
         const pieceCoordinate = req.body.pieceCoordinate
         const userTurnOrder = req.body.turnOrder
-        console.log(userTurnOrder)
         const player: string = req.body.currentPlayer
         const gameId = req.params._id
         const userId = req.userId
@@ -98,14 +90,9 @@ playGameRouter.put("/:_id", async (req: Request, res: Response) => {
             
         }
         
-
-        // console.log(pieceCoordinate)
-        // console.log(player)
-        // console.log(gameId)
-
         const r: number = parseInt(pieceCoordinate.split('-')[0])
         const c: number = parseInt(pieceCoordinate.split('-')[1])
-        
+        //get game buy id from database
         const game = await getGamebyId(gameId, userId)
 
         if(!game){
@@ -117,42 +104,37 @@ playGameRouter.put("/:_id", async (req: Request, res: Response) => {
         const turnOrder = game.turnOrder
         turnOrder.push(pieceCoordinate)
 
+        //update board and check for winner
         console.log(boardSize)
         board[r][c] = player
-        console.log(count)
         count +=1
-        console.log(count)
         const result = checkWinner(board, boardSize, player)
-        // console.log(result)
 
+        //if winner, then reset count and store winner
         if(result === "black" || result === "white" || result === "draw"){
             game.winner = result
             count = 0
         }
-
+        //updated game Object
         const userGame = {
             gameBoard: board,
             turnOrder: turnOrder,
             winner: game.winner
         }
 
-        // console.log(game)
-
-            const changeGame = await updateGame(gameId, userId, {...userGame, userId})
-
-        // console.log(changeGame)
+        //update game in database
+        const changeGame = await updateGame(gameId, userId, {...userGame, userId})
 
         if(!changeGame) return res.sendStatus(404)
-
+        //respond with updated game
         res.status(200).json(changeGame)
     }
     catch(err){
         return res.status(500).send(err)
     }
-
-
 })
 
+//Handle delete request from user when game is unfinished
 playGameRouter.delete("/:_id", validate(deleteGameSchema), async (req:Request, res:Response)=> {
     const userId = req.userId
     const gameId = req.params._id

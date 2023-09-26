@@ -1,5 +1,5 @@
-/* Home page that allows for selection of game board size and direct to game page
-or login page depending on login status */
+/* Home page that allows for selection of game board size and Sends Board size to server so that a new game can be stored in database.
+Receives back new game Board and unique gameId so can navigate to newly created game */
 
 import style from './Home.module.css'
 import { useState, useContext } from 'react'
@@ -21,11 +21,11 @@ export default function Home() {
 
   const handleLogin = async () =>{
     if (!user) {return navigate('/login')}
-    //navigate to Game page and send board size state to page aswell
     else if (size !== 'size'){
+      //sends post request to server to create new game with desired board size
       try{
       const createGame: game = await post(`${API_HOST}/api/newGame`,{
-        boardSize: size
+        boardSize: parseInt(size)
       })
 
       console.log(createGame)
@@ -39,6 +39,8 @@ export default function Home() {
       if(!createGame){
         return
       }
+
+      //navigate to game page with unique game ID as parameter and sharing new game to game page
 
       navigate(`game/${gameId}`, {state: { game: createGame}})
     

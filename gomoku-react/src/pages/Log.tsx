@@ -3,22 +3,21 @@ it to the page with the board, turn order and winner displayed */
 
 
 import { useParams, useNavigate, Navigate } from "react-router-dom"
-import { useLocalStorage } from "../hooks"
 import { UserContext } from "../context";
 import { useContext,useEffect,useState } from "react";
 import {get} from "../utils/http"
 import { game } from "../types/game";
-import { object } from "zod";
 
 export default function Log() {
 
+  //save user and gameID 
   const { gameId } = useParams()
-  console.log(gameId)
   const navigate = useNavigate()
   const {user} = useContext(UserContext);
 
   const API_HOST = process.env.API_HOST || ''
 
+  // initial game data to set state of gameDetails
   const initialGameData:game = {
       gameBoard: [],
       turnOrder: [],
@@ -28,45 +27,27 @@ export default function Log() {
   
     }
 
-
+  //set gameDetails state with initial game date
   const [gameDetails,setGameDetails] = useState<game>(initialGameData)
 
-
-  //define Gamedata object
-
-  type GameData = {
-    board: string[][];
-    turnOrder: string[];
-  };
-
-  //import games object from local storage
+  //get request to retrieve specific game with gameId 
   const getGameDetails = async () =>{
     try{
       console.log(gameId)
 
     const getGame = await get<game>(`${API_HOST}/api/gameDetails/${gameId}`)
     setGameDetails(getGame)
-    console.log(gameDetails)
-    const board = gameDetails.gameBoard
-    const turns = gameDetails.turnOrder
-    const winner = gameDetails.winner
-
     }
     catch(err){
       console.log(err)
     }
-
-
   } 
 
   useEffect(()=>{
     getGameDetails()
   },[])
-
-
   
-  // define page id for matching with game number
- 
+
   // if user not logged in navigate to login page
   if(!user)
   return <Navigate to = '/login'/>;
@@ -120,13 +101,7 @@ export default function Log() {
       </div>
     ))
   }
-
-  /* Read only game board of previously completed game rendered to the page with turn order also displayed */
-
-
-
-          /* Read only game board of previously completed game rendered to the page with turn order also displayed */
-
+      /* Read only game board of previously completed game rendered to the page with turn order also displayed */
       return (
 
         <div>

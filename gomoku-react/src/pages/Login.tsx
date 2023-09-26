@@ -1,5 +1,4 @@
-/* Login page that allows users to login with username and password that has been defined
-in users.json file*/
+/* Login page that allows users to login with username and password that are stored in database*/
 
 import style from './Login.module.css'
 import { useState, useContext } from 'react'
@@ -7,7 +6,7 @@ import { useNavigate } from 'react-router-dom'
 import { UserContext } from '../context'
 
 export default function Login() {
-  //track states for username and password and whether they match, and user is logged in
+  //track states for username and password and error message
   const { login } = useContext(UserContext)
   const navigate = useNavigate()
   const [username, setUsername] = useState('')
@@ -15,8 +14,8 @@ export default function Login() {
   const [errorMessage, setErrorMessage] = useState('')
 
 
-  /* match user login against defined username and password from users.json file 
-  and if it matches navigate to home page, if no match CredentialInvalid state is updated */
+  /* match user login against defined username and password from database, navigate to homepage if valid,
+  or error message if not valid*/
   const handleLogin = async() =>{
 
     setErrorMessage('')
@@ -28,21 +27,6 @@ export default function Login() {
       setErrorMessage(result)
     }
   }
-
-
-
-
-
-  //   const user = users.find(
-  //     (u) => u.username === username && u.password === password)
-  //     if(!user){
-  //       setIsCredentialInvald(true)
-  //     }
-  //     else{
-  //       login(username)
-  //       navigate('/')
-  //     }
-  // }
 
   /* render login page. Form that takes username and password inputs and runs handleLogin function
   to determine matches. Contains error handling if username or password do not match */

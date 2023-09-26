@@ -1,3 +1,5 @@
+/* Handles authorisation with JWT tokens and public/private keys */
+
 import jwt, { SignOptions } from 'jsonwebtoken'
 
 export const signJwt = (payload: Object, options: SignOptions = {}) => {

@@ -1,3 +1,5 @@
+/* Model for Game object that is stored in database*/
+
 import mongoose from "mongoose";
 import { UserDocument } from "./user.model";
 
@@ -7,8 +9,6 @@ export interface GameDocument extends Document {
     turnOrder: string[];
     winner: string;
     createdAt?: Date;
-
-
 }
 
 const GameSchema = new mongoose.Schema({

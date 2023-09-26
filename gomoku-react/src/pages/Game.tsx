@@ -1,5 +1,5 @@
-/*Game page that implements Gomoku 5 in a row game with customisable 
-board size and determine winner and tied game*/
+/*Game page that implements Gomoku 5 in a row game. Performs put request to send user turn to server and
+receives updated gameboard in response.
 
 /* import components and set variables for gomoku game*/
 import { useState, useContext } from "react"
@@ -9,42 +9,38 @@ import { put,del } from "../utils/http";
 import { game } from "../types/game";
 
 export default function Game() {
-  //define user or authentication
+  //define user and gameID
   const {user} = useContext(UserContext);
   const {gameId} = useParams()
   const navigate = useNavigate()
   const [isLoading, setIsLoading] = useState(false)
 
-   //import size of board from home page
+   //import created game
   const {state} = useLocation()
   const game = state
   const API_HOST = process.env.API_HOST || ''
-
   const blankBoard: string[][] = game.game.gameBoard
   const turnOrder: string[] = game.game.turnOrder
 
-  console.log(gameId)
-
-  // define states of the game board, game turns, currentplayer, gameover, and if a draw occurs
-  
-  
-  // const navigate = useNavigate();
+  // define states of the game board, currentplayer, and if there is a winner 
   const [board, setBoard] = useState(blankBoard);
   let [currentPlayer, setCurrentPlayer] = useState('black');
   const[isWinner, setisWinner] = useState('')
  
 
-  /* Function that handles the click on each game cell and updates the board and
-  turn order and also checks for a winner with each click */
+  /* Function that handles the click on each game cell, sends put request to server and receives updated board as response,
+  updating UI board.
+  */
 
   const handleClick = async (row:number, col:number) =>{
     try{
-    //block clicks if game is over 
 
+    //blocks clicking on cell if response not received
     if(isLoading === true){
       return;
     }
 
+    //block clicks if there is a winner
     if(isWinner!== ''){
       return;
     }
@@ -57,13 +53,9 @@ export default function Game() {
 
     const coordinate = `${row}-${col}`
     turnOrder.push(coordinate)
-
-    console.log("turnOrder: " +turnOrder)
-    console.log("pieceCoordinate:"+ coordinate)
-    console.log("player:" +currentPlayer)
-
-
     setIsLoading(true)
+
+    //put request sending player turn to server so that game result can be calculated.
 
     const playerTurn:game = await put(`${API_HOST}/api/game/${gameId}`,{
       pieceCoordinate: coordinate,
@@ -74,10 +66,10 @@ export default function Game() {
 
     setIsLoading(false)
 
+    //update gameboard using response from server
+
     const newBoard =playerTurn.gameBoard
     setisWinner(playerTurn.winner)
-
-    //board and turn order updated with each click
     setBoard(newBoard);
 
 
@@ -95,7 +87,6 @@ export default function Game() {
     setIsLoading(false)
   }
   }
-  // onClick={()=> handleClick(row, col)}
 
   /* function to render each Cell giving the cell an unique id and classname in the board
   Params: row and column of cell in 2d array
@@ -116,11 +107,10 @@ export default function Game() {
     )
   }
 
-  /* function that resets game by setting all variables to their initial values */
+  /* function that resets game, navigates to home page, and sends delete request to server */
 
   const resetGame = async () =>{
-    try{
-      
+    try{     
  
     await del(`${API_HOST}/api/game/${gameId}`)
 
@@ -145,12 +135,10 @@ export default function Game() {
   }
 
   //checks that user is logged in and returns to login page if not logged in
-
   if(!user)
   return <Navigate to = '/login'/>;
 
   /* Render Game Board to page */
-
   return ( 
 
     <div className="main">

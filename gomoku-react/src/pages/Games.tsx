@@ -1,6 +1,5 @@
 /* Games page that shows information of previously completed games*/
 
-import { useLocalStorage } from "../hooks"
 import { useNavigate, Navigate } from "react-router-dom"
 import { UserContext } from "../context";
 import { useContext,useState, useEffect } from "react";
@@ -9,18 +8,18 @@ import { get } from "../utils/http";
 import { game } from "../types/game";
 
 export default function Games() {
-  //import games object from local storage
+  //sets initial games state
   const [games, setGames] = useState<game[]>([])
   const API_HOST = process.env.API_HOST || '';  
   
+  //get request to server to retrieve all games stored in database
   const getGames = async () => {
   
     try{
-
+      
       const allGames = await get<game[]>(`${API_HOST}/api/games`)
+      //set games state using response from server
       setGames(allGames)
-      console.log(allGames)
-      console.log(games)
 
     }
     catch(err){

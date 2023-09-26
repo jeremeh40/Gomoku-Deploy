@@ -1,5 +1,7 @@
+/* handle user authentication with JWT token */
+
 import { NextFunction, Request, Response } from 'express'
-import { getUserById, getUserByUsername } from '../service/auth.service'
+import { getUserById } from '../service/auth.service'
 import { verifyJwt } from '../../util/jwt';
 
 interface TokenBody {

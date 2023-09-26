@@ -1,3 +1,5 @@
+/* Handle validation of schema during requests from frontend */
+
 import { Request, Response, NextFunction } from 'express'
 import { AnyZodObject } from 'zod'
 

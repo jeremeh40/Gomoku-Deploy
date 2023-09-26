@@ -1,3 +1,5 @@
+/* Functions to interact with the dataBase in regards to user */
+
 import mongoose from 'mongoose'
 import userModel, { UserDocument } from '../model/user.model'
 

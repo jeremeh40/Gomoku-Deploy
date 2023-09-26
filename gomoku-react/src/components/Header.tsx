@@ -12,7 +12,7 @@ export default function Header() {
   const location = useLocation();
 
 
-  /* getActions function that changes naviagation options in header depending on if use is logged in or not*/
+  /* getActions function that changes navigation options in header depending on if use is logged in or not*/
   const getActions = () => {
     if (user) {
       return(

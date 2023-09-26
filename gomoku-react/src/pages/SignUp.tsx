@@ -1,20 +1,22 @@
+/* signup page that allows users to create username and password to be stored in database for future login*/
+
 import style from './Login.module.css'
 import { useState, useContext } from 'react'
 import { useNavigate } from 'react-router-dom'
-import users from '../data/users.json'
 import { UserContext } from '../context'
-import { isRegularExpressionLiteral } from 'typescript'
-
 
 export default function SignUp() {
+
+    //set initial states for username and password fields
     const {signUp} = useContext(UserContext)
     const [username, setUsername] = useState('')
     const [password, setPassword] = useState('')
     const [confirmPassword, setConfirmPassword] = useState('')
     const [errorMessage, setErrorMessage] = useState('')
-
     const navigate = useNavigate()
 
+
+    // function that sends request to server to create user with username and password
     const handleSignUp = async () => {
 
         setErrorMessage('')
@@ -32,17 +34,10 @@ export default function SignUp() {
         else{
             setErrorMessage(result)
         }
-
-    
-
-
-
     }
 
-
-
-
-
+    /* render sign up page. Form that takes username and password inputs and runs handleSignUp function
+    to determine matches. Contains error handling if username or password do not match */
     return(
 
         <form className={style.container}

@@ -1,5 +1,5 @@
-/*Gomoku 5 in a row game with customisable board size and determine winner and tied game. Game requires
-login before plying and previous game results are saved to local browser storage and can be viewed*/
+/*Gomoku 5 in a row game with customisable board size that interacts with API endpoints of backend. Game requires
+login or sign up before playing and games are saved to a database and can be viewed by user once completed.*/
 
 
 import './App.css';
@@ -26,7 +26,6 @@ function App() {
       <Route path='games' element = {<History/>}/>
       <Route path='game-log/:gameId' element = {<Log/>}/>
       <Route path='*' element = {<Navigate to = "/" replace />}/>
-
 
     </Routes>
   </div>

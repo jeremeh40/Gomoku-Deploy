@@ -1,6 +1,4 @@
-// export type User = {
-//     username: string
-// }
+//User type to be used in application
 
 export type User = {
     _id: string

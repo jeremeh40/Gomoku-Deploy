@@ -1,3 +1,5 @@
+/* Schema to be validated to ensure correct user credentials are being received from front end*/
+
 import {string, object, TypeOf } from 'zod'
 
 const payload = {

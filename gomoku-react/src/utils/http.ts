@@ -1,3 +1,5 @@
+//Custom http requests to be used in application, allowing authorisation with tokens
+
 export default async function http<T>(request: RequestInfo): Promise<T> {
     const response = await fetch(request)
     if (!response.ok) {

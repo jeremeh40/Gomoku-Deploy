@@ -1,10 +1,18 @@
-import {string, object, TypeOf, array} from 'zod'
+/* Schema to be validated to ensure correct game credentials are being received from front end*/
 
-const payload = {
+import {string, object, TypeOf, array, number} from 'zod'
+
+const updateGamePayload = {
     body: object({
-        gameBoard: array(array(string({required_error: 'Game Board is required'}))).nonempty(),
+        pieceCoordinate: string({required_error: 'Piece coordinate is required'}).nonempty(),
         turnOrder: array(string({ required_error: 'turnOrder is required'})).nonempty(),
-        winner: string({required_error: "winner is required"}),
+        currentPlayer: string({required_error: "current player is required"}),
+    })
+}
+
+const createGamePayload = {
+    body: object({
+        boardSize: number({required_error: "boardSize is required"})
     })
 }
 
@@ -17,17 +25,15 @@ const getParams = {
 }
 
 export const createGameSchema = object({
-    ...payload
+    ...createGamePayload
 })
-
-
 
 export const getGameByIdSchema = object({
     ...getParams
 })
 
 export const updateGameSchema = object({
-    ...payload,
+    ...updateGamePayload,
     ...getParams    
 
 })

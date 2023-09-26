@@ -20,6 +20,10 @@ export default function UserProvider({children}: UserProviderProps) {
       setToken(user.token)
     }
 
+    /* Post request to complete user login. sends user credentials to server API endpoint to check if they are valid
+    
+    */
+
     const login = async (username: string, password: string) => {
       try {
         const user = await post<Credential, User>(`${API_HOST}/api/auth/login`, {
@@ -36,6 +40,10 @@ export default function UserProvider({children}: UserProviderProps) {
         return 'Unable to login at this moment, please try again'
       }
     }
+
+        /* Post request to complete user sign up. Sends username and password created by user to server to be validated and stored.
+    
+    */
   
     const signUp = async (username: string, password: string) => {
       try {
@@ -56,6 +64,10 @@ export default function UserProvider({children}: UserProviderProps) {
         return 'Unable to login at this moment, please try again'
       }
     }
+
+         /* function to handle user logout and set User and Token to undefined and empty
+    
+    */
     
     const logout = () => {
       setUser(undefined)
