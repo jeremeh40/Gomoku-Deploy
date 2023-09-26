@@ -22,22 +22,14 @@ export default function Game() {
 
   const blankBoard: string[][] = game.game.gameBoard
   const turnOrder: string[] = game.game.turnOrder
-  const winner: string = game.game.winner
 
   console.log(gameId)
-
-  //define gameDate object to be saved into local storage
-  type GameData = {
-    board: string[][];
-    turnOrder: string[];
-  };
 
   // define states of the game board, game turns, currentplayer, gameover, and if a draw occurs
   
   
   // const navigate = useNavigate();
   const [board, setBoard] = useState(blankBoard);
-  const [gameover, setGameOver] = useState(false);
   let [currentPlayer, setCurrentPlayer] = useState('black');
   const[isWinner, setisWinner] = useState('')
  
