@@ -33,8 +33,6 @@ export default function Log() {
   //get request to retrieve specific game with gameId 
   const getGameDetails = async () =>{
     try{
-      console.log(gameId)
-
     const getGame = await get<game>(`${API_HOST}/api/gameDetails/${gameId}`)
     setGameDetails(getGame)
     }

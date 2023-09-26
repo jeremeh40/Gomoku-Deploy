@@ -28,13 +28,11 @@ export default function Home() {
         boardSize: parseInt(size)
       })
 
-      console.log(createGame)
       if(!createGame){
         return
 
       }
       const gameId: string = createGame._id
-      console.log(gameId)
 
       if(!createGame){
         return
@@ -63,7 +61,6 @@ export default function Home() {
     <form className={style.container}
     onSubmit={(e) => {
       e.preventDefault()
-      console.log(size)
       handleLogin()
       
       

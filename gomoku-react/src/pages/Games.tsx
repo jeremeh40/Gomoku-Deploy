@@ -47,9 +47,7 @@ export default function Games() {
       <h2 className={style.gameCount}>Previous games: {Object.keys(games).length}</h2>
 
       {games.map(({winner, _id, createdAt}, index) => {
-        console.log(typeof(createdAt))
         createdAt = new Date(createdAt)
-        console.log(createdAt)
         const gameId = _id
         const month = createdAt.getMonth() +1;
         const day = createdAt.getDate()
