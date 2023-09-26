@@ -45,8 +45,6 @@ If you would like to create a unique username and password please navigate to th
 
 These can be seen and tested at the following Postman collection:
 
-### https://api.postman.com/collections/29771685-5a0933f6-5f54-4394-b750-ca01c346dedf?access_key=PMAT-01HB8MWPJ6BRW0D7K73QAMHGAP
-
 Please ensure you first perform the login or signup request. Then you can copy the token from the response and paste it in the authorisation section for each request. Request body is prefilled.
 
 The following API endpoints can be found for this application(all require Token for authorisation):
