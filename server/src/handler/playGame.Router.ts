@@ -1,8 +1,8 @@
 import express, { Request, Response} from 'express';
-import { deserializeUser } from '../src/middleware/deserialiseUser';
-import { deleteGameSchema, getGameByIdSchema } from '../src/schema/game.schema';
-import { deleteGame, getGamebyId, updateGame } from '../src/service/game.service';
-import validate from '../src/middleware/validateSchema'
+import { deserializeUser } from '../middleware/deserialiseUser';
+import { deleteGameSchema, getGameByIdSchema } from '../schema/game.schema';
+import { deleteGame, getGamebyId, updateGame } from '../service/game.service';
+import validate from '../middleware/validateSchema'
 
 
 const playGameRouter = express.Router();

@@ -1,10 +1,10 @@
 import express, { Request, Response} from 'express';
 import mongoose from 'mongoose';
-import validate from '../src/middleware/validateSchema';
-import { createGameSchema } from '../src/schema/game.schema';
+import validate from '../middleware/validateSchema';
+import { createGameSchema } from '../schema/game.schema';
 import { appendFile } from 'fs';
-import { createGame } from '../src/service/game.service';
-import { deserializeUser } from '../src/middleware/deserialiseUser';
+import { createGame } from '../service/game.service';
+import { deserializeUser } from '../middleware/deserialiseUser';
 
 const storeGameRouter = express.Router();
 storeGameRouter.use(deserializeUser)

@@ -2,10 +2,8 @@
 board size and determine winner and tied game*/
 
 /* import components and set variables for gomoku game*/
-
 import { useState, useContext } from "react"
 import { Navigate, useLocation, useNavigate, useParams } from "react-router-dom";
-import { useLocalStorage } from "../hooks";
 import { UserContext } from "../context";
 import { put,del } from "../utils/http";
 import { game } from "../types/game";
@@ -67,6 +65,11 @@ export default function Game() {
 
     const coordinate = `${row}-${col}`
     turnOrder.push(coordinate)
+
+    console.log("turnOrder: " +turnOrder)
+    console.log("pieceCoordinate:"+ coordinate)
+    console.log("player:" +currentPlayer)
+
 
     setIsLoading(true)
 
@@ -161,7 +164,7 @@ export default function Game() {
     <div className="main">
       <div className="game-info">
         {currentPlayer && isWinner === '' && <h2>Current Player: {currentPlayer}</h2>}
-        {isWinner === 'black' || isWinner === 'white' && <h2> Congratulations {isWinner} You won!</h2>}
+        {(isWinner === 'black' || isWinner === 'white') && <h2> Congratulations {isWinner} You won!</h2>}
         {isWinner === 'draw' && <h2> No more available moves! it's a draw</h2>}
 
       </div>

@@ -1,8 +1,8 @@
 import express, {Request, Response} from 'express'
-import validate from '../src/middleware/validateSchema';
-import { createGameSchema } from '../src/schema/game.schema';
-import { createGame } from '../src/service/game.service';
-import { deserializeUser } from '../src/middleware/deserialiseUser';
+import validate from '../middleware/validateSchema';
+import { createGameSchema } from '../schema/game.schema';
+import { createGame } from '../service/game.service';
+import { deserializeUser } from '../middleware/deserialiseUser';
 
 const newGameRouter = express.Router();
 newGameRouter.use(deserializeUser)

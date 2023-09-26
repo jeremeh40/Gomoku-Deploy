@@ -1,9 +1,9 @@
 import bcrypt from 'bcryptjs';
 import express, {Request, Response} from 'express'
-import validate from '../src/middleware/validateSchema'
-import { createUser, getUserByUsername } from '../src/service/auth.service'
-import { LoginInput, RegisterInput, registerSchema } from '../src/schema/auth.schema'
-import { signJwt } from '../util/jwt';
+import validate from '../middleware/validateSchema'
+import { createUser, getUserByUsername } from '../service/auth.service'
+import { LoginInput, RegisterInput, registerSchema } from '../schema/auth.schema'
+import { signJwt } from '../../util/jwt';
 
 const authHandler = express.Router()
 

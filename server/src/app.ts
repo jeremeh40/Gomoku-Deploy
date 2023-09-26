@@ -1,14 +1,14 @@
 import express, {Express, Request, Response} from 'express';
 import dotenv from 'dotenv';
 import mongoose from 'mongoose';
-import playGameRouter from '../handler/playGame.Router';
-import storeGameRouter from '../handler/storeGame.router';
-import newGameRouter from '../handler/newGame.handler';
+import playGameRouter from './handler/playGame.Router';
+import storeGameRouter from './handler/storeGame.router';
+import newGameRouter from './handler/newGame.handler';
 
 import connectDB from '../util/connectDB';
-import getGameRouter from '../handler/getGame.router';
-import getGamesRouter from '../handler/getGames.Router';
-import authHandler from '../handler/auth.handler';
+import getGameRouter from './handler/getGame.router';
+import getGamesRouter from './handler/getGames.Router';
+import authHandler from './handler/auth.handler';
 import cors from 'cors'
 
 dotenv.config();
