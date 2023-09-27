@@ -10,7 +10,7 @@ In order to start the app, first the server should be started followed by the re
 
 In the gomoku-server directory you can run:
 
-### `npm run dev`
+### `npm start`
 
 Runs the server at [http://localhost:8080] and connects to mongo db.
 
@@ -20,8 +20,7 @@ In the gomoku-react directory, you can run:
 
 ### `npm start`
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+Runs the app at [http://localhost:3000](http://localhost:3000). Click to view it in the browser.
 
 ### usage
 
@@ -43,7 +42,9 @@ If you would like to create a unique username and password please navigate to th
 
 ### API endpoints
 
-These can be seen and tested at the following Postman collection:
+These can be seen and tested at the following Postman collection the json file can also be found in the directory:
+
+### https://api.postman.com/collections/29771685-5a0933f6-5f54-4394-b750-ca01c346dedf?access_key=PMAT-01HB8MWPJ6BRW0D7K73QAMHGAP
 
 Please ensure you first perform the login or signup request. Then you can copy the token from the response and paste it in the authorisation section for each request. Request body is prefilled.
 
