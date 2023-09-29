@@ -105,7 +105,6 @@ playGameRouter.put("/:_id", validate(updateGameSchema), async (req: Request, res
         turnOrder.push(pieceCoordinate)
 
         //update board and check for winner
-        console.log(boardSize)
         board[r][c] = player
         count +=1
         const result = checkWinner(board, boardSize, player)
@@ -138,8 +137,6 @@ playGameRouter.put("/:_id", validate(updateGameSchema), async (req: Request, res
 playGameRouter.delete("/:_id", validate(deleteGameSchema), async (req:Request, res:Response)=> {
     const userId = req.userId
     const gameId = req.params._id
-    console.log("userID: "+userId)
-    console.log("gameId: " +gameId)
     await deleteGame(gameId, userId)
 
     return res.sendStatus(200)
