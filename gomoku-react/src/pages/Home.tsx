@@ -5,7 +5,7 @@ import style from './Home.module.css'
 import { useState, useContext } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { UserContext } from '../context'
-import { post, setToken } from '../utils/http'
+import { post } from '../utils/http'
 import { game } from '../types/game'
 
 
