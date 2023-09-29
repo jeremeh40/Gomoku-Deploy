@@ -7,6 +7,7 @@ import { useNavigate } from 'react-router-dom'
 import { UserContext } from '../context'
 import { post } from '../utils/http'
 import { game } from '../types/game'
+import { API_HOST } from '../constants'
 
 
 export default function Home() {
@@ -15,7 +16,6 @@ export default function Home() {
   const [size, setSize] = useState('size')
   const navigate = useNavigate()
   const { user } = useContext(UserContext)
-  const API_HOST = process.env.API_HOST || ''
 
   /* function to navigate user to login or game page depending on login status */
 

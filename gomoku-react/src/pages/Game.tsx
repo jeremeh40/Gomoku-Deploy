@@ -7,6 +7,7 @@ import { Navigate, useLocation, useNavigate, useParams } from "react-router-dom"
 import { UserContext } from "../context";
 import { put,del } from "../utils/http";
 import { game } from "../types/game";
+import { API_HOST } from '../constants'
 
 export default function Game() {
   //define user and gameID
@@ -18,7 +19,6 @@ export default function Game() {
    //import created game
   const {state} = useLocation()
   const game = state
-  const API_HOST = process.env.API_HOST || ''
   const blankBoard: string[][] = game.game.gameBoard
   const turnOrder: string[] = game.game.turnOrder
 

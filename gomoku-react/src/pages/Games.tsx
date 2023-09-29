@@ -6,11 +6,11 @@ import { useContext,useState, useEffect } from "react";
 import style from './Games.module.css'
 import { get } from "../utils/http";
 import { game } from "../types/game";
+import { API_HOST } from '../constants'
 
 export default function Games() {
   //sets initial games state
-  const [games, setGames] = useState<game[]>([])
-  const API_HOST = process.env.API_HOST || '';  
+  const [games, setGames] = useState<game[]>([]) 
   
   //get request to server to retrieve all games stored in database
   const getGames = async () => {

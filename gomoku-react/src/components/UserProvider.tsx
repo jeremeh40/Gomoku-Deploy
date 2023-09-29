@@ -4,8 +4,7 @@ import {UserContext} from '../context'
 import { User, Credential } from '../types/User'
 import { useLocalStorage } from '../hooks'
 import {post, setToken} from '../utils/http'
-
-const API_HOST = process.env.API_HOST || ''
+import { API_HOST } from '../constants'
 
 type UserProviderProps = {
     children: React.ReactNode

@@ -7,6 +7,7 @@ import { UserContext } from "../context";
 import { useContext,useEffect,useState } from "react";
 import {get} from "../utils/http"
 import { game } from "../types/game";
+import { API_HOST } from '../constants'
 
 export default function Log() {
 
@@ -14,8 +15,6 @@ export default function Log() {
   const { gameId } = useParams()
   const navigate = useNavigate()
   const {user} = useContext(UserContext);
-
-  const API_HOST = process.env.API_HOST || ''
 
   // initial game data to set state of gameDetails
   const initialGameData:game = {
